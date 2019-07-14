@@ -1,5 +1,6 @@
 import Foundation
 
+//label argument makes our queue unique for identification purposes
 let queue = DispatchQueue(label: "com.german.gcdasync")
 
 queue.async {
@@ -9,4 +10,5 @@ queue.async {
         print("Update ui with result: \(longCaclulationResult)")
     }
 }
+
 //: [Back](Main)
