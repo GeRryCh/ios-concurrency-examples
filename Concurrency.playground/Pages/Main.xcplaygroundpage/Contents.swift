@@ -1,5 +1,6 @@
 
-import Foundation
+
+import UIKit
 /*:
 
  There are two common ways to rule the multigreading in iOS. Using **GCD** or **OperationQueues**, a hight level concurrency manipulation built upon GCD. What is for sure you shouldn't find yourself creating Thread explicitly.
@@ -49,6 +50,33 @@ let concurrentQueue = DispatchQueue(label: "com.german.concurrent", attributes: 
 Creating a queue with a default QoS doesn't promise all its tasks will be executed with an exact priority. If tasks will a highest priority will be enqueued. GCD will try to execute them first to prevent [priority inversion](https://en.wikipedia.org/wiki/Priority_inversion)
  
 [GCD QoS Priority Inversion Example](GCD-QoS-PI)
+ 
+ ### Adding tasks
+*/
+
+class RepositoriesVC: UIViewController {
+    @IBOutlet weak var label: UILabel!
+    
+    override func viewDidLoad() {
+        DispatchQueue.global(qos: .utility).async {
+            [weak self] in
+            //a request to a far away server
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                self.label.text = "new repos exist!"
+            }
+        }
+    }
+}
+
+
+/*:
+Three things you need to take away from this example:
+ 1. `self` is captured like any other instance would be captured as Swift closure rules dictate, remaining view controller alive until the closure is destroyed.
+ 2. Strongly capturing self won't cause a retain cycle. The closure will be deallocated once it's completed.
+ 3. **NO UI UPDATES ON MAIN THREAD!**
+
+ You can play with the example above [here](GCD-Closures) by commenting such lines as weak self capture, guard around self in order to understand more about how async closure behaves.
  
  ## Thanks
  */

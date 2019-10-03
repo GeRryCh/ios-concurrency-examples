@@ -4,5 +4,6 @@
         <page name='Main'/>
         <page name='GCD-async'/>
         <page name='GCD-QoS-PI'/>
+        <page name='GCD-Closures'/>
     </pages>
 </playground>
